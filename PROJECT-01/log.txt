@@ -1,0 +1,7 @@
+
+function toString() { [native code] }: ::1: GET: /api/users
+function toString() { [native code] }: ::1: GET: /api/users
+1705076702039: ::1: GET: /api/users
+1705076770848: ::1: POST: /api/users
+1705076797927: ::1: DELETE: /api/users/503
+1705076821607: ::1: PATCH: /api/users/503
