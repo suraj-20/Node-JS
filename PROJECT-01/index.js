@@ -8,7 +8,7 @@ const PORT = 8000;
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-  console.log("Midleware 1");
+  // console.log("Midleware 1");
   next();
 });
 
@@ -35,7 +35,8 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/api/users", (req, res) => {
-  return res.json(users);
+  res.setHeader("X-myName", "Suraj");
+  return res.status(200).json(users);
 });
 
 app
@@ -43,6 +44,9 @@ app
   .get((req, res) => {
     const id = Number(req.params.id); // convert string into number using Number keyword.
     const user = users.find((user) => user.id === id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
     // console.log(user);
 
     return res.json(user);
@@ -75,10 +79,20 @@ app
 
 app.post("/api/users", (req, res) => {
   const body = req.body;
+  if (
+    !body ||
+    !body.first_name ||
+    !body.last_name ||
+    !body.email ||
+    !body.gender ||
+    !body.job_title
+  ) {
+    res.status(400).json({ msg: "All fields are required..." });
+  }
   //   console.log("body", body);
   users.push({ ...body, id: users.length + 1 });
   fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-    return res.json({ status: "success", id: users.length });
+    return res.status(201).json({ status: "success", id: users.length });
   });
 });
 

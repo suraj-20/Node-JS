@@ -5,3 +5,16 @@ function toString() { [native code] }: ::1: GET: /api/users
 1705076770848: ::1: POST: /api/users
 1705076797927: ::1: DELETE: /api/users/503
 1705076821607: ::1: PATCH: /api/users/503
+1705127111203: ::1: GET: /api/users
+1705127213856: ::1: POST: /api/users
+1705128358313: ::1: GET: /api/users
+1705128384647: ::1: POST: /api/users
+1705128935080: ::1: GET: /api/users
+1705128953764: ::1: POST: /api/users
+1705129172970: ::1: POST: /api/users
+1705129185520: ::1: POST: /api/users
+1705129192803: ::1: POST: /api/users
+1705129578190: ::1: GET: /api/users/499
+1705129585494: ::1: GET: /api/users/498
+1705129591523: ::1: GET: /api/users/504
+1705129600926: ::1: GET: /api/users/5000
