@@ -44,7 +44,7 @@ const user = mongoose.model("users", userSchema);
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-  console.log("Midleware 1");
+  // console.log("Midleware 1");
   next();
 });
 
@@ -72,7 +72,6 @@ app.get("/users", (req, res) => {
 
 app.get("/api/users", async (req, res) => {
   const allDbUsers = await user.find({});
-
   return res.status(200).json(allDbUsers);
 });
 
@@ -93,19 +92,17 @@ app
     // const userBody = req.body;
     // const userID = users.findIndex((user) => user.id === id);
     // // console.log("userID :", userID);
-
     // const getUser = users[userID];
     // const updated_User = { ...getUser, ...userBody };
-
     // users[userID] = updated_User;
-
-    const updated_User = await user.findByIdAndUpdate(req.params.id);
-
-    // console.log("updated_user:", updated_User);
-
-    return res.send({ status: "success", updated_User });
     // fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
     // });
+
+    const updated_User = await user.findByIdAndUpdate(req.params.id, {
+      last_name: "kumar",
+    });
+    // console.log("updated_user:", updated_User);
+    return res.send({ status: "success", updated_User });
   })
   .delete(async (req, res) => {
     // const id = Number(req.params.id);
@@ -118,7 +115,6 @@ app
     // });
 
     const deleted_user = await user.findByIdAndDelete(req.params.id);
-
     // console.log(deleted_user);
     return res.json({ status: "success", deleted_user });
   });
@@ -149,7 +145,7 @@ app.post("/api/users", async (req, res) => {
     job_title: body.job_title,
   });
 
-  console.log("result", result);
+  // console.log("result", result);
 
   res.status(201).json({ msg: "Success" });
 });

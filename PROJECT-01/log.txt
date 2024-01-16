@@ -46,3 +46,4 @@ function toString() { [native code] }: ::1: GET: /api/users
 1705416794485: ::1: GET: /api/users
 1705416807737: ::1: DELETE: /api/users/65a6985060c87eb833856ec4
 1705416840444: ::1: POST: /api/users
+1705417928813: ::1: PATCH: /api/users/65a696e6643b48f279d4471d
