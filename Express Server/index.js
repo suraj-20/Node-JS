@@ -6,6 +6,22 @@ const users = require("../PROJECT-01/MOCK_DATA.json");
 
 app.use(express.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  console.log("Hello From middleware 1");
+  next();
+});
+
+app.use((req, res, next) => {
+  const d = Date.now();
+  fs.appendFile(
+    "log.txt",
+    `\n${req.d}: ${req.ip}: ${req.path}`,
+    (err, data) => {
+      next();
+    }
+  );
+});
+
 app.get("/users", (req, res) => {
   const html = `
       <ul>
@@ -25,19 +41,29 @@ app.get("/api/users/:id", (req, res) => {
   const id = Number(req.params.id);
   const userID = users.find((user) => user.id === id);
 
-  return res.json(userID);
+  return res.status(200).json(userID);
 });
 
 app.post("/api/users", (req, res) => {
   const body = req.body;
   console.log("body: ", body);
+  if (
+    !body ||
+    !body.first_name ||
+    !body.last_name ||
+    !body.gender ||
+    !body.email ||
+    !body.job_title
+  ) {
+    res.status(400).json("All fields are required..");
+  }
   users.push({ ...body, id: users.length + 1 });
 
   fs.writeFile(
     "../PROJECT-01/MOCK_DATA.json",
     JSON.stringify(users),
     (err, data) => {
-      return res.json({ status: "success", id: users.length });
+      return res.status(201).json({ status: "success", id: users.length });
     }
   );
 });
@@ -66,11 +92,15 @@ app.delete("/api/users/:id", (req, res) => {
   const userID = users.findIndex((user) => user.id === id);
   console.log("userID: ", userID);
   const deleted_user = users.splice(userID, 1)[0];
-  console.log("deleted_user :" ,deleted_user)
+  console.log("deleted_user :", deleted_user);
 
-  fs.writeFile("../PROJECT-01/MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-    return res.json({ status: "success", deleted_user });
-  })
+  fs.writeFile(
+    "../PROJECT-01/MOCK_DATA.json",
+    JSON.stringify(users),
+    (err, data) => {
+      return res.json({ status: "success", deleted_user });
+    }
+  );
 });
 
 app.listen(PORT, () => {
