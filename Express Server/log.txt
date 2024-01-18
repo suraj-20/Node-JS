@@ -36,3 +36,10 @@ undefined: ::1: /users
 undefined: ::ffff:127.0.0.1: /users
 undefined: ::ffff:127.0.0.1: /users
 undefined: ::ffff:127.0.0.1: /users
+undefined: ::1: /api/users
+undefined: ::1: /api/users/65a8d0c90f9359f02e300a88
+undefined: ::1: /api/users/65a8d0c90f9359f02e300a88
+undefined: ::1: /api/users/65a8d0c90f9359f02e300a88
+undefined: ::1: /api/users
+undefined: ::1: /api/users
+undefined: ::1: /api/users/65a94e2f4bd4658cd70266e7
