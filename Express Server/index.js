@@ -2,7 +2,44 @@ const express = require("express");
 const PORT = 3000;
 const app = express();
 const fs = require("fs");
-const users = require("../PROJECT-01/MOCK_DATA.json");
+const mongoose = require("mongoose");
+
+mongoose
+  .connect("mongodb://127.0.0.1:27017/userdb")
+  .then(() => {
+    console.log("MongoDB connected");
+  })
+  .catch((err) => {
+    console.log("MongoDB error :", err);
+  });
+
+const userSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    jobTitle: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const user = mongoose.model("users", userSchema);
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -22,85 +59,65 @@ app.use((req, res, next) => {
   );
 });
 
-app.get("/users", (req, res) => {
+app.get("/users",async (req, res) => {
+  const users = await user.find()
   const html = `
       <ul>
       {
-        ${users.map((user) => `<li>${user.first_name}</li>`).join("")}
+        ${users.map((user) => `<li>${user.firstName}</li>`).join("")}
       }
       </ul>
     `;
   return res.send(html);
 });
 
-app.get("/api/users", (req, res) => {
-  return res.json(users);
+app.get("/api/users", async (req, res) => {
+  const getAllUsers = await user.find({});
+  return res.json(getAllUsers);
 });
 
-app.get("/api/users/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const userID = users.find((user) => user.id === id);
+app.get("/api/users/:id", async (req, res) => {
+  const getById = await user.findById(req.params.id);
 
-  return res.status(200).json(userID);
+  return res.status(200).json({ stauts: "Succeess", getById });
 });
 
-app.post("/api/users", (req, res) => {
+app.post("/api/users", async (req, res) => {
   const body = req.body;
-  console.log("body: ", body);
+  // console.log("body: ", body);
   if (
     !body ||
-    !body.first_name ||
-    !body.last_name ||
+    !body.firstName ||
+    !body.lastName ||
     !body.gender ||
     !body.email ||
-    !body.job_title
+    !body.jobTitle
   ) {
     res.status(400).json("All fields are required..");
   }
-  users.push({ ...body, id: users.length + 1 });
 
-  fs.writeFile(
-    "../PROJECT-01/MOCK_DATA.json",
-    JSON.stringify(users),
-    (err, data) => {
-      return res.status(201).json({ status: "success", id: users.length });
-    }
-  );
+  const result = await user.create({
+    firstName: body.firstName,
+    lastName: body.lastName,
+    email: body.email,
+    gender: body.gender,
+    jobTitle: body.jobTitle,
+  });
+
+  return res.status(201).json({ status: "success", result });
 });
 
-app.patch("/api/users/:id", (req, res) => {
-  const body = req.body;
-  const id = Number(req.params.id);
-  const userID = users.findIndex((user) => user.id === id);
-
-  const getUser = users[userID];
-  const updated_User = { ...getUser, ...body };
-
-  users[userID] = updated_User;
-
-  fs.writeFile(
-    "../PROJECT-01/MOCK_DATA.json",
-    JSON.stringify(users),
-    (err, data) => {
-      return res.json({ status: "success", updated_User });
-    }
-  );
+app.patch("/api/users/:id", async (req, res) => {
+  const updateUserByID = await user.findByIdAndUpdate(req.params.id, {
+    lastName: "Kumar",
+  });
+  return res.json({ status: "success", updateUserByID });
 });
 
-app.delete("/api/users/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const userID = users.findIndex((user) => user.id === id);
-  console.log("userID: ", userID);
-  const deleted_user = users.splice(userID, 1)[0];
-  console.log("deleted_user :", deleted_user);
+app.delete("/api/users/:id", async (req, res) => {
+  const deletedUserByID = await user.findByIdAndDelete(req.params.id);
 
-  fs.writeFile(
-    "../PROJECT-01/MOCK_DATA.json",
-    JSON.stringify(users),
-    (err, data) => {
-      return res.json({ status: "success", deleted_user });
-    }
-  );
+  return res.json({ status: "success", deletedUserByID });
 });
 
 app.listen(PORT, () => {
