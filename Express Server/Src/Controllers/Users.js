@@ -32,11 +32,11 @@ async function handleCreateNewUser(req, res) {
 }
 
 async function handleGetUserByID(req, res) {
-  const user = await user.findById(req.params.id);
+  const users = await user.findById(req.params.id);
 
-  if (!user) return res.status(404).json("User not found");
+  if(!users) return res.status(404).json("User not found");
 
-  return res.status(200).json({ stauts: "Succeess", user });
+  return res.status(200).json({ stauts: "Succeess", users });
 }
 
 async function handleUpdateUserById(req, res) {
