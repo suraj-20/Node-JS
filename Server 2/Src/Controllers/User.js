@@ -8,7 +8,7 @@ module.exports.register = async (req, res) => {
     !body.firstName ||
     !body.lastName ||
     !body.email ||
-    !body.password 
+    !body.password
   ) {
     return res.status(400).json({ msg: "All fields are required." });
   }
@@ -20,7 +20,7 @@ module.exports.register = async (req, res) => {
     password: body.password,
   });
 
-//   return res.status(201).json({ msg: "User added successfully", users });
+  //   return res.status(201).json({ msg: "User added successfully", users });
   const result = await user.create(users);
 
   if (result) {
@@ -29,3 +29,21 @@ module.exports.register = async (req, res) => {
     return res.status(400).json({ msg: "User not added" });
   }
 };
+
+module.exports.handleGetAllUsers = async (req, res) => {
+  const getAllUsers = await user.find({});
+
+  return res.status(200).json({ msg: "Get All Users", getAllUsers });
+};
+
+module.exports.handleGetUserById = async (req, res) => {
+  const getUserById = await user.findById(req.params.id);
+
+  return res.status(200).json({ msg: "Get User By Id.", getUserById });
+};
+
+module.exports.handleDeleteUserById = async(req, res) => {
+  const deleteUserById = await user.findByIdAndDelete(req.params.id);
+
+  return res.json({ msg: "User deleted.", deleteUserById });
+}

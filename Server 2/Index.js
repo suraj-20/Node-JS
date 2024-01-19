@@ -2,7 +2,7 @@
 const express = require("express");
 const userRoutes = require("./Src/Routes/User");
 const { connectMongoDb } = require("./Config/MongoDB");
-const { logReqRes } = require("./Src/Middleware/index");
+const { logReqRes } = require("./Src/Middleware/index")
 const bodyParser = require("body-parser");
 
 // Step 2: Create server and port.
@@ -13,7 +13,7 @@ server.use(bodyParser.json());
 server.use(express.urlencoded({ extended: false }));
 
 // Middleware.
-server.use(logReqRes("log.txt"))
+server.use(logReqRes("log.txt"));
 
 // Connect Database.
 connectMongoDb("mongodb://127.0.0.1:27017/user-credential")
