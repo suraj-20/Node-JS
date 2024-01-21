@@ -11,6 +11,7 @@ module.exports.handleGenerateNewShortURL = async (req, res) => {
     visitHistory: [],
   });
 
+  // return res.json({ msg: "ShortId generated", id: shortID });
   return res.render("home", { id: shortID });
 };
 
@@ -29,7 +30,8 @@ module.exports.handleRedirectToShortId = async (req, res) => {
     }
   );
 
-  res.redirect(entry.redirectURL.length);
+  // res.status(200).json({ msg: "All Set", entry });
+  res.redirect(entry.redirectURL);
 };
 
 module.exports.handleGetAnalytics = async (req, res) => {
