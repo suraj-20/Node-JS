@@ -10,3 +10,12 @@ module.exports.restrictToLogginedUserOnly = async (req, res, next) => {
   req.user = user;
   next();
 };
+
+module.exports.authCheck = async (req, res, next) => {
+  const userUid = req.cookies?.uid;
+
+  const user = getUser(userUid);
+
+  req.user = user;
+  next();
+};
