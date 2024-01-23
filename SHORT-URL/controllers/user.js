@@ -34,10 +34,11 @@ module.exports.handleUserLogin = async (req, res) => {
       error: "Invalid username or password",
     });
 
-  const sessionId = uuidv4();
-  setUser(sessionId, user);
-  res.cookie("uid", sessionId);
-  return res.redirect("/");
+  // const sessionId = uuidv4();
+
+  const token = setUser(user);
+  // res.cookie("uid", token);
+  return res.json({ token });
 };
 
 module.exports.handleUserDelete = async (req, res) => {
