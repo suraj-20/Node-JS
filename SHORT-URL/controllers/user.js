@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 const { setUser } = require("../service/auth");
 
 module.exports.handleUserSignup = async (req, res) => {
@@ -37,8 +37,8 @@ module.exports.handleUserLogin = async (req, res) => {
   // const sessionId = uuidv4();
 
   const token = setUser(user);
-  // res.cookie("uid", token);
-  return res.json({ token });
+  res.cookie("token", token);
+  return res.redirect("/");
 };
 
 module.exports.handleUserDelete = async (req, res) => {

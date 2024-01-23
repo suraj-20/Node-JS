@@ -1,8 +1,8 @@
 const express = require("express");
 const { connectMongoDb } = require("./config/mongoDb");
 const path = require("path");
-const cookieParser = require("cookie-parser")
-const { restrictToLogginedUserOnly, authCheck } = require("./middleware/auth");
+const cookieParser = require("cookie-parser");
+const { checkForAuthentication, restrictTo } = require("./middleware/auth");
 
 const server = express();
 const port = 8001;
@@ -18,10 +18,11 @@ server.set("views", path.resolve("./Views"));
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
-server.use(cookieParser()); 
+server.use(cookieParser());
+server.use(checkForAuthentication);
 
-server.use("/url", restrictToLogginedUserOnly, urlRoutes);
-server.use("/",authCheck, staticRoute);
+server.use("/url", restrictTo(["NORMAL", "ADMIN"]), urlRoutes);
+server.use("/", staticRoute);
 server.use("/user", userRoute);
 
 server.listen(port, () => {
