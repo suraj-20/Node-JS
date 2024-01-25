@@ -1,7 +1,11 @@
 const path = require("path");
 const express = require("express");
 const multer = require("multer");
-// const imageRoutes = require("./routes/images");
+const { connectMongoDb } = require("./config/mongoose");
+const imageSchema = require("./models/imageSchema");
+const fs = require("fs");
+
+connectMongoDb("mongodb://127.0.0.1:27017/image-uploader");
 
 const app = express();
 const port = 5000;
@@ -21,12 +25,39 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
-app.post("/upload", upload.single("profileImage"), (req, res) => {
+app.get("/", async (req, res) => {
+  await imageSchema.find({}).then((data, err) => {
+    if (err) {
+      console.log(err);
+    }
+    return res.render("homepage", { items: data });
+  });
+});
+
+app.post("/", upload.single("image"), async (req, res) => {
   console.log(req.body);
   console.log(req.file);
 
-  return res.redirect("/");
+  const body = req.body;
+
+  const obj = new imageSchema({
+    name: body.name,
+    img: {
+      data: fs.readFileSync(req.file.path),
+      contentType: "image/png",
+    },
+  });
+
+  await imageSchema.create(obj).then((err, items) => {
+    if (err) {
+      console.log(err);
+    } else {
+      items.save();
+      return res.redirect("/");
+    }
+  });
 });
 
 app.get("/", (req, res) => {
