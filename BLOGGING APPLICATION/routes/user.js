@@ -1,7 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
 const router = express.Router();
-const { createTokenForUser } = require("../services/authentication");
 
 router.get("/signup", (req, res) => {
   return res.render("signup");
