@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>restaurants</title>
+  </head>
+  <body>
+    <h1>Restaurant Search</h1>
+
+    <% if (restaurant && restaurant.length > 0) { %>
+      <%= JSON.stringify(restaurant) %>
+    <ul>
+      <% restaurant.forEach(restaurant => { %>
+      <li><%= restaurant.name %> - <%= restaurant.location %></li>
+      <% }) %>
+    </ul>
+
+    
+    <div>
+      <p>Page <%= currentPage %> of <%= totalPages %></p>
+      <div>
+        <% if (currentPage > 1) { %>
+        <a
+          href="?name=<%= restaurant.name %>&location=<%= restaurant.location %>&page=<%= currentPage - 1 %>"
+          >Previous</a
+        >
+        <% } %> <% if (currentPage < totalPages) { %>
+        <a
+          href="?name=<%= restaurant.name %>&location=<%= restaurant.location %>&page=<%= currentPage + 1 %>"
+          >Next</a
+        >
+        <% } %>
+      </div>
+    </div>
+    <% } %>
+  </body>
+</html>

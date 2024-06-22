@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search API</title>
+  </head>
+  <body>
+    <h1>Search API</h1>
+
+    <form action="/api/restaurants/search" method="get" id="searchForm">
+      <label for="location">Location:</label>
+      <input type="text" name="location" id="location" />
+      <button type="submit">Search</button>
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" />
+      <button type="submit">Search</button>
+    </form>
+
+    
+
+    <!-- <script>
+      const form = document.getElementById("searchForm");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const queryString = new URLSearchParams(formData).toString();
+        window.location.href = `/api/restaurant/search?${queryString}`;
+      });
+    </script> -->
+  </body>
+</html>

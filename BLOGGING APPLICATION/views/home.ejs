@@ -5,8 +5,7 @@
     <title>Home page</title>
   </head>
   <body>
-    <%- include("./partials/nav.ejs") %>
-
+    <%- include("./partials/nav.ejs") %> <% if (locals.user) { %>
     <div class="container mt-4">
       <div class="row row-cols-3">
         <% blogs.forEach(blog => { %>
@@ -23,7 +22,6 @@
         <% }) %>
       </div>
     </div>
-
-    <%- include("./partials/scripts.js") %>
+    <% } %> <%- include("./partials/scripts.js") %>
   </body>
 </html>
